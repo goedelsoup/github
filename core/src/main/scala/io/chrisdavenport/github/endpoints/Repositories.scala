@@ -62,4 +62,13 @@ object Repositories {
     editRepo
   )
 
+  def listRepos[F[_]: Sync](
+    owner: String,
+    auth: Option[Auth]
+  ): Kleisli[fs2.Stream[F, *], Client[F], List[Repo]] =
+  RequestConstructor.runPaginatedRequest[F, List[Repo]](
+    auth,
+    uri"/repos" / owner
+  )
+
 }
